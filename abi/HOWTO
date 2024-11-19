@@ -1,0 +1,1 @@
+abigen --abi uniswapV2Pair.abi.json --pkg abi_uniswapv2pair --out uniswapv2pair.go  
