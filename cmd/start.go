@@ -7,7 +7,6 @@ import (
 	"github.com/paulborgen/goLangArb/internal/mylogger"
 	"github.com/paulborgen/goLangArb/internal/service/simpleV2ArbService"
 	"github.com/paulborgen/goLangArb/internal/service/triangleArbService"
-	"github.com/paulborgen/goLangArb/internal/test"
 	"github.com/rs/zerolog/log"
 )
 
@@ -37,7 +36,7 @@ func main() {
 	log.Info().Msgf("About to run process with Name: " + processName)
 
 	if processName == "test" {
-		test.Start(processName)
+		
 	} else if processName == "gatherPairs" {
 		dexpairgather.Start()
 	} else if processName == "findSimpleArb" {
