@@ -3,13 +3,14 @@ package myUtil
 import (
 	"context"
 	"fmt"
+	"math/big"
+	"strings"
+
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	"math/big"
-	"strings"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
 )
 
 func MyAsync[T any](f func() T) chan T {

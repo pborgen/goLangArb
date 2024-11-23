@@ -3,11 +3,12 @@ package orm
 import (
 	"database/sql"
 	"fmt"
-	"github.com/hexlivelive/goBot/internal/database"
 	"log"
 	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/paulborgen/goLangArb/internal/database"
 )
 
 type Scannable interface {

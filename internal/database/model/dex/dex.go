@@ -1,11 +1,12 @@
 package dex
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/internal/database"
-	"github.com/hexlivelive/goBot/internal/database/model/orm"
-	"github.com/rs/zerolog/log"
 	"strconv"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/paulborgen/goLangArb/internal/database"
+	"github.com/paulborgen/goLangArb/internal/database/model/orm"
+	"github.com/rs/zerolog/log"
 )
 
 type ModelDex struct {

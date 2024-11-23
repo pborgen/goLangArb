@@ -1,13 +1,14 @@
 package pairFinder
 
 import (
-	dexUniswapV2Factory "github.com/hexlivelive/goBot/internal/blockchain/dex/v2"
-	"github.com/hexlivelive/goBot/internal/blockchain/dex/v2/dexUniswpV2Pair"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/hexlivelive/goBot/internal/database/model/pair"
-	"github.com/hexlivelive/goBot/internal/service/erc20Service"
-	"github.com/rs/zerolog/log"
 	"math/big"
+
+	dexUniswapV2Factory "github.com/paulborgen/goLangArb/internal/blockchain/dex/v2"
+	"github.com/paulborgen/goLangArb/internal/blockchain/dex/v2/dexUniswpV2Pair"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/paulborgen/goLangArb/internal/database/model/pair"
+	"github.com/paulborgen/goLangArb/internal/service/erc20Service"
+	"github.com/rs/zerolog/log"
 )
 
 func PopulatePairsInDb(dex dex.ModelDex) {

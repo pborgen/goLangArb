@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "LetsGo",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "cmd/start.go",
+      "args": ["gatherPairs"]
+    },
+    {
+      "name": "test",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "cmd/test/test.go",
+      "args": [""]
+    },
+
+  ]
+}

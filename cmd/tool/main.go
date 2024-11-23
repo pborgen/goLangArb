@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	myUtil "github.com/hexlivelive/goBot/internal/util"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
+	myUtil "github.com/paulborgen/goLangArb/internal/util"
 )
 
 func main() {

@@ -1,7 +1,7 @@
 package account
 
 import (
-	"github.com/hexlivelive/goBot/internal/database"
+	"github.com/paulborgen/goLangArb/internal/database"
 )
 
 type ModelAccount struct {

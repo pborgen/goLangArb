@@ -1,13 +1,14 @@
 package dexpairgather
 
 import (
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/hexlivelive/goBot/internal/mylogger"
-	"github.com/hexlivelive/goBot/internal/service/pairFinder"
-	"github.com/rs/zerolog/log"
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/paulborgen/goLangArb/internal/mylogger"
+	"github.com/paulborgen/goLangArb/internal/service/pairFinder"
+	"github.com/rs/zerolog/log"
 )
 
 func Start() {

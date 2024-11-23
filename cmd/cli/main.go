@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/internal/blockchain/dex/v2/dexUniswapV2Router"
-	"github.com/hexlivelive/goBot/internal/blockchain/dex/v2/dexUniswpV2Pair"
-	"github.com/hexlivelive/goBot/internal/database/model/pair"
-	"github.com/hexlivelive/goBot/internal/mylogger"
-	"github.com/hexlivelive/goBot/internal/service/pairFinder"
+	"github.com/paulborgen/goLangArb/internal/blockchain/dex/v2/dexUniswapV2Router"
+	"github.com/paulborgen/goLangArb/internal/blockchain/dex/v2/dexUniswpV2Pair"
+	"github.com/paulborgen/goLangArb/internal/database/model/pair"
+	"github.com/paulborgen/goLangArb/internal/mylogger"
+	"github.com/paulborgen/goLangArb/internal/service/pairFinder"
 	"github.com/rs/zerolog/log"
 )
 

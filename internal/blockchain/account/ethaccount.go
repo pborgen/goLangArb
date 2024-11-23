@@ -4,11 +4,12 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"errors"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	"github.com/hexlivelive/goBot/internal/database/model/account"
-	"math/big"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
+	"github.com/paulborgen/goLangArb/internal/database/model/account"
 )
 
 func GetAuthAccount(account account.ModelAccount) (*bind.TransactOpts, error) {

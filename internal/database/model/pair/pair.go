@@ -5,17 +5,18 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/internal/database"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/hexlivelive/goBot/internal/database/model/erc20"
-	"github.com/hexlivelive/goBot/internal/database/model/orm"
-	myUtil "github.com/hexlivelive/goBot/internal/util"
-	"github.com/rs/zerolog/log"
-	"golang.org/x/sync/semaphore"
 	"math/big"
 	"strconv"
 	"sync"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/paulborgen/goLangArb/internal/database"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/paulborgen/goLangArb/internal/database/model/erc20"
+	"github.com/paulborgen/goLangArb/internal/database/model/orm"
+	myUtil "github.com/paulborgen/goLangArb/internal/util"
+	"github.com/rs/zerolog/log"
+	"golang.org/x/sync/semaphore"
 )
 
 type ModelPair struct {

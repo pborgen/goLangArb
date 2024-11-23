@@ -2,8 +2,8 @@ package dca
 
 //
 //import (
-//	dexUniswapV2 "github.com/hexlivelive/goBot/internal/blockchain/dex/v2"
-//	"github.com/hexlivelive/goBot/internal/mytypes"
+//	dexUniswapV2 "github.com/paulborgen/goLangArb/internal/blockchain/dex/v2"
+//	"github.com/paulborgen/goLangArb/internal/mytypes"
 //	"time"
 //)
 //

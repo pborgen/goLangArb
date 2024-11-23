@@ -1,11 +1,12 @@
 package dexUniswapV2Router
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	uniswapv2router "github.com/hexlivelive/goBot/abi/V2Router"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	"github.com/rs/zerolog/log"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+	uniswapv2router "github.com/paulborgen/goLangArb/abi/V2Router"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
+	"github.com/rs/zerolog/log"
 )
 
 func V2RouterGetFactory(routerAddress common.Address) common.Address {

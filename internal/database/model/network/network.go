@@ -1,9 +1,10 @@
 package network
 
 import (
-	"github.com/hexlivelive/goBot/internal/database"
-	"github.com/hexlivelive/goBot/internal/database/model/orm"
 	"strconv"
+
+	"github.com/paulborgen/goLangArb/internal/database"
+	"github.com/paulborgen/goLangArb/internal/database/model/orm"
 )
 
 type NetworkModel struct {

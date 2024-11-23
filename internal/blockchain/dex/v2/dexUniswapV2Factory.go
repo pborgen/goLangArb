@@ -1,12 +1,13 @@
 package dexUniswapV2Factory
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	pulsexV2Factory "github.com/hexlivelive/goBot/abi/pulseXV2"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/rs/zerolog/log"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+	pulsexV2Factory "github.com/paulborgen/goLangArb/abi/pulseXV2"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/rs/zerolog/log"
 )
 
 func GetAllPairsLength(dexModel dex.ModelDex) int {

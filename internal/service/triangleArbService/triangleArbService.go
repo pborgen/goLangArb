@@ -1,14 +1,15 @@
 package triangleArbService
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/hexlivelive/goBot/internal/database/model/erc20"
-	"github.com/hexlivelive/goBot/internal/database/model/pair"
-	"github.com/hexlivelive/goBot/internal/database/model/triangleArb"
-	clientservice "github.com/hexlivelive/goBot/internal/service/clientService"
-	"github.com/rs/zerolog/log"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/paulborgen/goLangArb/internal/database/model/erc20"
+	"github.com/paulborgen/goLangArb/internal/database/model/pair"
+	"github.com/paulborgen/goLangArb/internal/database/model/triangleArb"
+	clientservice "github.com/paulborgen/goLangArb/internal/service/clientService"
+	"github.com/rs/zerolog/log"
 )
 
 var wplsAddress = common.HexToAddress("0xa1077a294dde1b09bb078844df40758a5d0f9a27")

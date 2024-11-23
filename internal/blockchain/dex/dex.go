@@ -4,15 +4,16 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"log"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
-	pulsexhelper "github.com/hexlivelive/goBot/abi"
-	"github.com/hexlivelive/goBot/abi/erc20"
-	pulsexV2Factory "github.com/hexlivelive/goBot/abi/pulseXV2"
-	"log"
-	"math/big"
+	pulsexhelper "github.com/paulborgen/goLangArb/abi"
+	"github.com/paulborgen/goLangArb/abi/erc20"
+	pulsexV2Factory "github.com/paulborgen/goLangArb/abi/pulseXV2"
 )
 
 // FactoryAddress points to the uniswap factory.

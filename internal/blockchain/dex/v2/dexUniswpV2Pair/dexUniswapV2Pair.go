@@ -1,12 +1,13 @@
 package dexUniswpV2Pair
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	abi_uniswapv2pair "github.com/hexlivelive/goBot/abi/dexV2"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
 	"log"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+	abi_uniswapv2pair "github.com/paulborgen/goLangArb/abi/dexV2"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
 )
 
 type Reserve struct {

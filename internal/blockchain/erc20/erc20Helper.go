@@ -2,8 +2,8 @@ package erc20Helper
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/abi/erc20"
-	"github.com/hexlivelive/goBot/internal/blockchain"
+	"github.com/paulborgen/goLangArb/abi/erc20"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
 	"github.com/rs/zerolog/log"
 )
 

@@ -3,12 +3,13 @@ package triangleArb
 import (
 	"errors"
 	"fmt"
-	"github.com/hexlivelive/goBot/internal/database"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/hexlivelive/goBot/internal/database/model/orm"
-	"github.com/hexlivelive/goBot/internal/database/model/pair"
-	"github.com/rs/zerolog/log"
 	"strconv"
+
+	"github.com/paulborgen/goLangArb/internal/database"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/paulborgen/goLangArb/internal/database/model/orm"
+	"github.com/paulborgen/goLangArb/internal/database/model/pair"
+	"github.com/rs/zerolog/log"
 )
 
 type ModelTriangleArb struct {

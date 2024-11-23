@@ -2,10 +2,11 @@ package clientservice
 
 import (
 	"errors"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	blockchainAccount "github.com/hexlivelive/goBot/internal/blockchain/account"
-	"github.com/hexlivelive/goBot/internal/database/model/account"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	blockchainAccount "github.com/paulborgen/goLangArb/internal/blockchain/account"
+	"github.com/paulborgen/goLangArb/internal/database/model/account"
 )
 
 // MAP[publicKey]isLocked

@@ -2,18 +2,19 @@ package simpleV2ArbService
 
 import (
 	"errors"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/hexlivelive/goBot/internal/blockchain/dex/v2/dexUniswapV2Router"
-	simpleV2ArbHelper "github.com/hexlivelive/goBot/internal/blockchain/simplev2arbhelper"
-	"github.com/hexlivelive/goBot/internal/database/model/dex"
-	"github.com/hexlivelive/goBot/internal/database/model/pair"
-	"github.com/hexlivelive/goBot/internal/database/model/simpleV2Arb"
-	clientservice "github.com/hexlivelive/goBot/internal/service/clientService"
-	myUtil "github.com/hexlivelive/goBot/internal/util"
-	"github.com/rs/zerolog/log"
 	"math/big"
 	"strings"
 	"sync"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/paulborgen/goLangArb/internal/blockchain/dex/v2/dexUniswapV2Router"
+	simpleV2ArbHelper "github.com/paulborgen/goLangArb/internal/blockchain/simplev2arbhelper"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
+	"github.com/paulborgen/goLangArb/internal/database/model/pair"
+	"github.com/paulborgen/goLangArb/internal/database/model/simpleV2Arb"
+	clientservice "github.com/paulborgen/goLangArb/internal/service/clientService"
+	myUtil "github.com/paulborgen/goLangArb/internal/util"
+	"github.com/rs/zerolog/log"
 )
 
 var wplsAddress = common.HexToAddress("0xa1077a294dde1b09bb078844df40758a5d0f9a27")

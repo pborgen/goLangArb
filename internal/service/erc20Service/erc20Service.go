@@ -2,8 +2,8 @@ package erc20Service
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	erc20Helper "github.com/hexlivelive/goBot/internal/blockchain/erc20"
-	"github.com/hexlivelive/goBot/internal/database/model/erc20"
+	erc20Helper "github.com/paulborgen/goLangArb/internal/blockchain/erc20"
+	"github.com/paulborgen/goLangArb/internal/database/model/erc20"
 )
 
 func GetByContractAddress(contractAddress common.Address, networkId int) (erc20.ModelERC20, error) {

@@ -1,16 +1,20 @@
 package main
 
 import (
-	"github.com/hexlivelive/goBot/cmd/dexpairgather"
-	"github.com/hexlivelive/goBot/internal/mylogger"
-	"github.com/hexlivelive/goBot/internal/service/simpleV2ArbService"
-	"github.com/hexlivelive/goBot/internal/service/triangleArbService"
-	"github.com/hexlivelive/goBot/internal/test"
-	"github.com/rs/zerolog/log"
 	"os"
+
+	"github.com/paulborgen/goLangArb/cmd/dexpairgather"
+	"github.com/paulborgen/goLangArb/internal/mylogger"
+	"github.com/paulborgen/goLangArb/internal/service/simpleV2ArbService"
+	"github.com/paulborgen/goLangArb/internal/service/triangleArbService"
+	"github.com/paulborgen/goLangArb/internal/test"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
+
+	
+	mylogger.Init()
 	mylogger.Init()
 
 	log.Info().Msgf("Starting...")

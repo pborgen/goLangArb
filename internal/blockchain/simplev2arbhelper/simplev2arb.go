@@ -3,13 +3,14 @@ package simpleV2ArbHelper
 import (
 	"context"
 	"fmt"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	simplev2arbabi "github.com/hexlivelive/goBot/abi/arbSimple"
-	"github.com/hexlivelive/goBot/internal/blockchain"
-	myUtil "github.com/hexlivelive/goBot/internal/util"
+	simplev2arbabi "github.com/paulborgen/goLangArb/abi/arbSimple"
+	"github.com/paulborgen/goLangArb/internal/blockchain"
+	myUtil "github.com/paulborgen/goLangArb/internal/util"
 	"github.com/rs/zerolog/log"
-	"math/big"
 )
 
 var simpleArbContractAddress = common.HexToAddress("0x7021DaEaBDaacfe7512d607F1B3b509e08cf441E")
