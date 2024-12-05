@@ -2,28 +2,21 @@ package blockchain
 
 import (
 	"context"
+
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/rs/zerolog/log"
-	"sync"
 )
 
-var lock = &sync.Mutex{}
-var singleInstance *ethclient.Client
-var singleInstanceAuth *ethclient.Client
 
 func GetClient() *ethclient.Client {
 
 	client, err := ethclient.Dial("https://rpc.pulsechain.com")
 
 	if err != nil {
-
 		log.Fatal().Msgf("Error in GetClient")
 	} else {
 		log.Log().Msgf("Success! you are connected to the Network")
 	}
-
-	//log.Log().Msgf("Creating blockchain Client single instance now.")
-	//singleInstance = client
 
 	return client
 }

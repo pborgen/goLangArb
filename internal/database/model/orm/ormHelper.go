@@ -76,11 +76,6 @@ func CreateUpdateStatement(myStruct any, tableName string, primaryKeyColumnName 
 	numberOfColumns := strings.Count(pairColumnNamesNoPrimaryKey, ",") + 1
 	log.Print(numberOfColumns)
 
-	//updateStatement := " SET "
-	//for i, columnName := range pairColumnNamesNoPrimaryKey {
-	//	updateStatement = updateStatement + " " + columnName + " = $" + strconv.Itoa(i) + ","
-	//}
-
 	sqlStatementTemp := `
 		UPDATE %s 
 		%s

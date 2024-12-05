@@ -120,8 +120,6 @@ func GetById(id int) (*ModelPair, error) {
 
 func GetByContractAddress(contractAddress common.Address) (*ModelPair, error) {
 
-	//var pairModel ModelPair
-
 	db := database.GetDBConnection()
 	contractAddressAsString := contractAddress.String()
 	sql := "SELECT " + pairColumnNames + " FROM " + tableName + " WHERE PAIR_CONTRACT_ADDRESS = $1"
