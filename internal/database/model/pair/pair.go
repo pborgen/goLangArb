@@ -42,7 +42,7 @@ type PairsOrganized struct {
 const primaryKey = "PAIR_ID"
 const tableName = "PAIR"
 
-var wplsAddress = common.HexToAddress("0xa1077a294dde1b09bb078844df40758a5d0f9a27")
+var wplsAddress = common.HexToAddress("0xA1077a294dDE1B09bB078844df40758a5D0f9a27")
 
 var pairColumnNames = orm.GetColumnNames(ModelPair{})
 
@@ -161,6 +161,33 @@ func GetAll() ([]ModelPair, error) {
 	return results, nil
 }
 
+func GetAllPairsThatHavePlsByDexId(dexId int) ([]ModelPair, error) {
+
+	db := database.GetDBConnection()
+
+	wplsModelErc20 := erc20.GetByContractAddress(wplsAddress)
+
+	results := make([]ModelPair, 0)
+	rows, err := db.Query("SELECT "+pairColumnNames+" FROM "+tableName+" WHERE (TOKEN0_ID = $1 OR TOKEN1_ID = $2) AND DEX_ID = $3", wplsModelErc20.Erc20Id, wplsModelErc20.Erc20Id, dexId)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		pair, err := scan(rows)
+
+		if err != nil {
+
+			return nil, err
+		}
+		results = append(results, *pair)
+	}
+
+	return results, nil
+}
+
 func GetAllPairsThatHavePls() ([]ModelPair, error) {
 
 	db := database.GetDBConnection()
@@ -187,6 +214,7 @@ func GetAllPairsThatHavePls() ([]ModelPair, error) {
 
 	return results, nil
 }
+
 func GetAllPairs() ([]ModelPair, error) {
 
 	db := database.GetDBConnection()
@@ -408,8 +436,24 @@ func scan(rows orm.Scannable) (*ModelPair, error) {
 	}
 
 	pairModel.PairContractAddress = common.HexToAddress(tempPairContractAddress)
-	pairModel.Token0Reserves = *new(big.Int).SetBytes(tempToken0Reserves)
-	pairModel.Token1Reserves = *new(big.Int).SetBytes(tempToken1Reserves)
+
+	tempToken0ReservesString := string(tempToken0Reserves)
+	tempToken1ReservesString := string(tempToken1Reserves)
+	
+
+	temp0, success := new(big.Int).SetString(tempToken0ReservesString, 10)  // base 10
+	if !success {
+		log.Error().Msgf("Failed to convert string to big.Int")
+	}
+
+
+	temp1, success := new(big.Int).SetString(tempToken1ReservesString, 10)  // base 10
+	if !success {
+		log.Error().Msgf("Failed to convert string to big.Int")
+	}
+
+	pairModel.Token0Reserves = *temp0
+	pairModel.Token1Reserves = *temp1
 
 	// Hydrate
 	out1 := myUtil.MyAsync(func() erc20.ModelERC20 {

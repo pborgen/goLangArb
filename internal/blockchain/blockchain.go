@@ -21,6 +21,19 @@ func GetClient() *ethclient.Client {
 	return client
 }
 
+func GetClientWebSocket() *ethclient.Client {
+
+	client, err := ethclient.Dial("ws://rpc.pulsechain.com")
+
+	if err != nil {
+		log.Fatal().Msgf("Error in GetClient")
+	} else {
+		log.Log().Msgf("Success! you are connected to the Network")
+	}
+
+	return client
+}
+
 func GetClientAuth() *ethclient.Client {
 
 	client, err := ethclient.Dial("https://rpc.pulsechain.com")

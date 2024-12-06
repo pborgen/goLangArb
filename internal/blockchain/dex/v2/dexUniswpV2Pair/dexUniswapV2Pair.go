@@ -1,6 +1,7 @@
 package dexUniswpV2Pair
 
 import (
+	"fmt"
 	"log"
 	"math/big"
 
@@ -46,31 +47,36 @@ func PopulateReserves(pairAddress common.Address) (*struct {
 	Reserve0 big.Int
 	Reserve1 big.Int
 }, error) {
+	const maxRetries = 5
+	var lastErr error
 
-	client := blockchain.GetClient()
+	for i := 0; i < maxRetries; i++ {
+		client := blockchain.GetClient()
+		contract, err := abi_uniswapv2pair.NewAbiUniswapv2pairCaller(pairAddress, client)
 
-	contract, err := abi_uniswapv2pair.NewAbiUniswapv2pairCaller(pairAddress, client)
+		if err != nil {
+			lastErr = err
+			continue
+		}
 
-	if err != nil {
-		log.Fatalf("Failed to connect to the Ethereum client: %v", err)
+		reserves, err := contract.GetReserves(nil)
+		if err != nil {
+			lastErr = err
+			continue
+		}
+
+		outStruct := new(struct {
+			Reserve0 big.Int
+			Reserve1 big.Int
+		})
+
+		outStruct.Reserve0 = *reserves.Reserve0
+		outStruct.Reserve1 = *reserves.Reserve1
+
+		return outStruct, nil
 	}
 
-	reserves, err := contract.GetReserves(nil)
-
-	if err != nil {
-		return nil, err
-	}
-
-	outStruct := new(struct {
-		Reserve0 big.Int
-		Reserve1 big.Int
-	})
-
-	outStruct.Reserve0 = *reserves.Reserve0
-	outStruct.Reserve1 = *reserves.Reserve1
-
-	return outStruct, nil
-
+	return nil, fmt.Errorf("failed after %d retries, last error: %v", maxRetries, lastErr)
 }
 
 //

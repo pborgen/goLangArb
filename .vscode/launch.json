@@ -9,7 +9,43 @@
       "program": "cmd/start.go",
       "args": ["gatherPairs"]
     },
-
-
+    {
+      "name": "findSimpleArb",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "cmd/start.go",
+      "args": ["findSimpleArb"]
+    },
+    {
+      "name": "writePlsPairsByDexId",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "cmd/start.go",
+      "args": ["writePlsPairsByDexId"]
+    },
+    {
+      "name": "API Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "api/server/main.go"
+    },
+    {
+      "name": "API Client",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "api/client/main.go"
+    },
+    {
+      "name": "listenMempool",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "cmd/start.go",
+      "args": ["listenMempool"]
+    }
   ]
 }

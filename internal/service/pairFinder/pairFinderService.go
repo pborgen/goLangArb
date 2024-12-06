@@ -62,11 +62,31 @@ func UpdateAllReserves() {
 	dexs := dex.GetAll()
 
 	for _, dex := range dexs {
-		updateReserves(dex)
+		UpdateReserves(dex)
 	}
 }
 
-func updateReserves(dex dex.ModelDex) {
+func UpdateReservesForPairs(modelPairs []pair.ModelPair) {
+	for _, modelPair := range modelPairs {
+		UpdateReservesForPair(modelPair)
+	}
+}
+
+func UpdateReservesForPair(modelPair pair.ModelPair) {
+	reserves, err := dexUniswpV2Pair.PopulateReserves(modelPair.PairContractAddress)
+
+	if err != nil {
+		panic("bla")
+	}
+
+	err2 := pair.UpdateReserves(modelPair.PairId, reserves.Reserve0, reserves.Reserve1)
+
+	if err2 != nil {
+		panic("")
+	}
+}
+
+func UpdateReserves(dex dex.ModelDex) {
 
 	allPairs, _ := pair.GetAllPairsOnDex(dex.DexId)
 

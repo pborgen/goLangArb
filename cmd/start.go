@@ -2,8 +2,10 @@ package main
 
 import (
 	"os"
+	"time"
 
 	"github.com/paulborgen/goLangArb/cmd/dexpairgather"
+	"github.com/paulborgen/goLangArb/internal/blockchain/mempool"
 	"github.com/paulborgen/goLangArb/internal/mylogger"
 	"github.com/paulborgen/goLangArb/internal/service/simpleV2ArbService"
 	"github.com/paulborgen/goLangArb/internal/service/triangleArbService"
@@ -39,6 +41,13 @@ func main() {
 		
 	} else if processName == "gatherPairs" {
 		dexpairgather.Start()
+	} else if processName == "listenMempool" {
+		start := time.Now()
+		mempool.GetAllTransactions()
+		elapsed := time.Since(start)
+		log.Info().Msgf("Time taken: %s", elapsed)
+	} else if processName == "writePlsPairsByDexId" {
+		dexpairgather.WriteToFilePlsPairsByDexId([]int{3, 4})
 	} else if processName == "findSimpleArb" {
 		simpleV2ArbService.Find()
 	} else if processName == "findTriangleArb" {
