@@ -1,1 +1,3 @@
 abigen --abi uniswapV2Pair.abi.json --pkg abi_uniswapv2pair --out uniswapv2pair.go  
+
+abigen --abi PulseXSwapRouter.abi.json --pkg abi_pulsex_swap_router --out pulseXSwapRouter.go

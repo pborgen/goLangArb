@@ -1,7 +1,9 @@
 package dexpairgather
 
 import (
+	"encoding/json"
 	"math/big"
+	"os"
 	"strconv"
 	"sync"
 	"time"
@@ -12,6 +14,16 @@ import (
 	"github.com/paulborgen/goLangArb/internal/service/pairFinder"
 	"github.com/rs/zerolog/log"
 )
+
+type PossibleSandwich struct {
+    DexName  string
+	DexRouterAddress string
+	DexFactoryAddress string
+
+	Token0Address string
+	Token1Address string
+	PairContractAddress string
+}
 
 func Start() {
 	mylogger.Init()
@@ -46,34 +58,32 @@ func UpdateReservesForPairs(dexIds []int) []pair.ModelPair {
 	return allPairs
 }
 
-func plsPairWithHighAmountOfPls(dexId int) []pair.ModelPair {
+func plsPairWithHighAmountOfPls(dexIds []int, minAmountOfPls *big.Int) []pair.ModelPair {
 
 	returnValue := []pair.ModelPair{}
 
-	millionPls := big.NewInt(0)
-    millionPls.SetString("1000000000000000000000000", 10)
-	//tenMillionPls := new(big.Int).Mul(millionPls, big.NewInt(10))
-	fiftyMillionPls := new(big.Int).Mul(millionPls, big.NewInt(50))
+	allPairs := []pair.ModelPair{}
+	for _, dexId := range dexIds {
+		allPairsForDexId, err := pair.GetAllPairsThatHavePlsByDexId(dexId)
+		if err != nil {
+			log.Error().Msgf(err.Error())
+		}
 
-
-
-	allPairsForDexId, err := pair.GetAllPairsThatHavePlsByDexId(dexId)
-	if err != nil {
-		log.Error().Msgf(err.Error())
+		allPairs = append(allPairs, allPairsForDexId...)
 	}
 
-	for _, pair := range allPairsForDexId {
+	for _, pair := range allPairs {
 		shouldAdd := false
 		if pair.Token0Erc20Id == 1 {
-			if pair.Token0Reserves.Cmp(fiftyMillionPls) >= 0 {
+			if pair.Token0Reserves.Cmp(minAmountOfPls) >= 0 {
 				shouldAdd = true
 			}
 		} else if pair.Token1Erc20Id == 1 {
-			if pair.Token1Reserves.Cmp(fiftyMillionPls) >= 0 {
+			if pair.Token1Reserves.Cmp(minAmountOfPls) >= 0 {
 				shouldAdd = true
 			}
 		} else {
-			panic("No pls pair found for dexId: " + strconv.Itoa(dexId))
+			panic("No pls pair found for dexId: " + strconv.Itoa(pair.PairId))
 		}
 
 		if shouldAdd {
@@ -88,14 +98,43 @@ func plsPairWithHighAmountOfPls(dexId int) []pair.ModelPair {
 
 func WriteToFilePlsPairsByDexId(dexIds []int) {
 
+	millionPls := big.NewInt(0)
+    millionPls.SetString("1000000000000000000000000", 10)
+	tenMillionPls := new(big.Int).Mul(millionPls, big.NewInt(10))
 
-	var allPairs []pair.ModelPair = plsPairWithHighAmountOfPls(3)
+
+	var allPairs []pair.ModelPair = plsPairWithHighAmountOfPls(dexIds, tenMillionPls)
 
 	log.Info().Msgf("Found " + strconv.Itoa(len(allPairs)) + " pairs with high amount of pls")
 
+	var myMap = make(map[string]PossibleSandwich)
 	for _, pair := range allPairs {
-		log.Info().Msgf(pair.PairContractAddress.String())
+		dex := dex.GetById(pair.DexId)
+		myMap[pair.PairContractAddress.String()] = PossibleSandwich{
+			DexName: dex.Name,
+			DexRouterAddress: dex.RouterContractAddress.String(),
+			DexFactoryAddress: dex.FactoryContractAddress.String(),
+
+			Token0Address: pair.Token0Erc20.ContractAddress.String(),
+			Token1Address: pair.Token1Erc20.ContractAddress.String(),
+			PairContractAddress: pair.PairContractAddress.String(),
+		}
 	}
+
+	// Convert map to json
+	jsonData, err := json.MarshalIndent(myMap, "", "  ")
+	if err != nil {
+		log.Error().Msgf(err.Error())
+	}
+
+
+	// Write to file
+	err = os.WriteFile("possibleSandwiches.json", jsonData, 0644)
+	if err != nil {
+		log.Error().Msgf(err.Error())
+	}
+
+	log.Info().Msgf(string(jsonData))
 }
 
 func Gather(dexId int) {

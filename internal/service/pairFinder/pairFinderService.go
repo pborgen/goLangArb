@@ -4,7 +4,7 @@ import (
 	"math/big"
 
 	dexUniswapV2Factory "github.com/paulborgen/goLangArb/internal/blockchain/dex/v2"
-	"github.com/paulborgen/goLangArb/internal/blockchain/dex/v2/dexUniswpV2Pair"
+	"github.com/paulborgen/goLangArb/internal/blockchain/dex/v2/dexUniswapV2Pair"
 	"github.com/paulborgen/goLangArb/internal/database/model/dex"
 	"github.com/paulborgen/goLangArb/internal/database/model/pair"
 	"github.com/paulborgen/goLangArb/internal/service/erc20Service"
@@ -24,7 +24,7 @@ func PopulatePairsInDb(dex dex.ModelDex) {
 		pairAddress := dexUniswapV2Factory.GetPairAddress(dex, iAsBigInt)
 
 		// Get the 2 taken Addresses for the pair
-		result := dexUniswpV2Pair.GetTokenAddressesForPair(dex, pairAddress)
+		result := dexUniswapV2Pair.GetTokenAddressesForPair(dex, pairAddress)
 		token0Address := result.Token0Address
 		token1Address := result.Token1Address
 
@@ -73,7 +73,7 @@ func UpdateReservesForPairs(modelPairs []pair.ModelPair) {
 }
 
 func UpdateReservesForPair(modelPair pair.ModelPair) {
-	reserves, err := dexUniswpV2Pair.PopulateReserves(modelPair.PairContractAddress)
+	reserves, err := dexUniswapV2Pair.PopulateReservesForPair(modelPair.PairContractAddress)
 
 	if err != nil {
 		panic("bla")
@@ -93,7 +93,7 @@ func UpdateReserves(dex dex.ModelDex) {
 	// Add the new pairs
 	for _, tempPair := range allPairs {
 
-		reserves, err := dexUniswpV2Pair.PopulateReserves(tempPair.PairContractAddress)
+		reserves, err := dexUniswapV2Pair.PopulateReservesForPair(tempPair.PairContractAddress)
 
 		if err != nil {
 			panic("bla")

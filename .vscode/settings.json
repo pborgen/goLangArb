@@ -5,6 +5,7 @@
     "ethclient",
     "gethclient",
     "Msgf",
+    "mylogger",
     "paulborgen",
     "pborgen",
     "protoimpl",

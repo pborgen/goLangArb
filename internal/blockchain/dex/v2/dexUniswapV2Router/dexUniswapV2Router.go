@@ -26,6 +26,7 @@ func GetAmountsOut(routerAddress common.Address, amountIn *big.Int, path []commo
 	client := blockchain.GetClient()
 	router, err := uniswapv2router.NewUniswapv2routerCaller(routerAddress, client)
 
+	
 	if err != nil {
 		log.Fatal().Msgf("Error creating router instance: %v", err)
 	}

@@ -2,7 +2,8 @@ package mempool
 
 import (
 	"context"
-	"fmt"
+
+	"errors"
 
 	"github.com/rs/zerolog/log"
 
@@ -10,6 +11,8 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient/gethclient"
 	"github.com/paulborgen/goLangArb/internal/blockchain"
+	"github.com/paulborgen/goLangArb/internal/blockchain/node"
+	"github.com/paulborgen/goLangArb/internal/database/model/dex"
 )
 
 func GetAllTransactions2() {
@@ -40,37 +43,61 @@ func GetAllTransactions2() {
 
 }
 
-func GetAllTransactions() {
+func SubscribeToPendingTransactions() error {
  
+    bla := dex.GetById(1)
+    log.Info().Msg(bla.Name)
+    
 	client := blockchain.GetClientWebSocket()
 
 	ctx := context.Background()
 
 	pendingTxSub := make(chan common.Hash)
 
-    sub, err := gethclient.New(client.Client()).SubscribePendingTransactions(ctx,pendingTxSub)
+    sub, err := gethclient.New(client.Client()).SubscribePendingTransactions(ctx, pendingTxSub)
     if err != nil {
         log.Fatal().Err(err)
     }
     defer sub.Unsubscribe()
 
-    // Start processing incoming pending transactions
-    for {
-        select {
-        case err := <-sub.Err():
-            log.Fatal().Err(err)
-        case txs := <-pendingTxSub:
-           
-            transaction, _, err := client.TransactionByHash(ctx, txs)
-            if err != nil {
-              log.Fatal().Err(err)
-            }
-            fmt.Printf("Pending Transaction Hash: %s\n", transaction)
+    isNodeSynced := node.CheckNodeSync(client)
 
-        }
+    if !isNodeSynced {
+        log.Fatal().Msg("Node is not fully synced")
+        return errors.New("node is not fully synced")
     }
 
-    
+    checkNodeSyncCounter := 0
+
+
+    dexes:= dex.GetAllByNetworkId(1);
+   
+
+    routerMap := dex.ModelDexToMapWithRouterAddressAsKey(dexes);
+
+    processor := NewTransactionProcessor(client, routerMap, 10, log.Logger)
+
+    processor.Start(ctx)
+
+    // Start processing incoming pending transactions
+    for {
+
+        if checkNodeSyncCounter > 100 {
+            isNodeSynced = node.CheckNodeSync(client)
+            if !isNodeSynced {
+                log.Fatal().Msg("Node is not fully synced")
+                return errors.New("node is not fully synced")
+            }
+            checkNodeSyncCounter = 0
+        } else {
+            checkNodeSyncCounter++
+        }
+
+    }
+
+    log.Info().Msgf("Done")
+
+    return nil
 }
 
 // getPendingTransactions retrieves pending transactions from the mempool

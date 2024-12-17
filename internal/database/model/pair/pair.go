@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"math/big"
 	"strconv"
+	"strings"
+
 	"sync"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -109,7 +111,7 @@ func GetById(id int) (*ModelPair, error) {
 		return nil, errors.New("Could not find pairId:" + strconv.Itoa(id))
 	}
 
-	pairModel, err := scan(rows)
+	pairModel, err := scan(rows, true)
 
 	if err != nil {
 		return nil, err
@@ -127,7 +129,7 @@ func GetByContractAddress(contractAddress common.Address) (*ModelPair, error) {
 
 	pairModel := &ModelPair{}
 
-	pairModel, err := scan(rows)
+	pairModel, err := scan(rows, true)
 
 	if err != nil {
 		return nil, err
@@ -149,7 +151,7 @@ func GetAll() ([]ModelPair, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		pair, err := scan(rows)
+		pair, err := scan(rows, true)
 
 		if err != nil {
 
@@ -176,7 +178,7 @@ func GetAllPairsThatHavePlsByDexId(dexId int) ([]ModelPair, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		pair, err := scan(rows)
+		pair, err := scan(rows, false)
 
 		if err != nil {
 
@@ -186,6 +188,50 @@ func GetAllPairsThatHavePlsByDexId(dexId int) ([]ModelPair, error) {
 	}
 
 	return results, nil
+}
+
+func GetAllPairsThatHavePlsByDexIds(dexIds []int) ([]ModelPair, error) {
+
+	db := database.GetDBConnection()
+
+	wplsModelErc20 := erc20.GetByContractAddress(wplsAddress)
+
+	results := make([]ModelPair, 0)
+
+	var IDs []string
+	for _, i := range dexIds {
+		IDs = append(IDs, strconv.Itoa(i))
+	}
+
+	query := fmt.Sprintf("SELECT "+pairColumnNames+" FROM "+tableName+" WHERE (TOKEN0_ID = $1 OR TOKEN1_ID = $2) AND DEX_ID IN (%s)", strings.Join(IDs, ","))
+	rows, err := db.Query(query, wplsModelErc20.Erc20Id, wplsModelErc20.Erc20Id)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		pair, err := scan(rows, false)
+
+		if err != nil {
+
+			return nil, err
+		}
+		results = append(results, *pair)
+	}
+
+	return results, nil
+}
+
+func ModelPairToMap(modelPairList []ModelPair) (map[common.Address]ModelPair) {
+	modelPairMap := make(map[common.Address]ModelPair)
+
+	for _, modelPair := range modelPairList {
+		modelPairMap[modelPair.PairContractAddress] = modelPair
+	}
+
+	return modelPairMap
 }
 
 func GetAllPairsThatHavePls() ([]ModelPair, error) {
@@ -203,7 +249,7 @@ func GetAllPairsThatHavePls() ([]ModelPair, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		pair, err := scan(rows)
+		pair, err := scan(rows, true)
 
 		if err != nil {
 
@@ -285,7 +331,7 @@ func GetAllPairsOnDex(dexId int) ([]ModelPair, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		pair, err := scan(rows)
+		pair, err := scan(rows, true)
 
 		if err != nil {
 
@@ -312,7 +358,7 @@ func GetAllPairsWithOutPls() ([]ModelPair, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		pair, err := scan(rows)
+		pair, err := scan(rows, true)
 
 		if err != nil {
 
@@ -399,7 +445,7 @@ func query(sem *semaphore.Weighted, ch chan []ModelPair, wg *sync.WaitGroup, sql
 
 	for rows.Next() {
 
-		pair, err := scan(rows)
+		pair, err := scan(rows, true)
 
 		if err != nil {
 
@@ -413,7 +459,7 @@ func query(sem *semaphore.Weighted, ch chan []ModelPair, wg *sync.WaitGroup, sql
 	ch <- results
 }
 
-func scan(rows orm.Scannable) (*ModelPair, error) {
+func scan(rows orm.Scannable, shouldHydrate bool) (*ModelPair, error) {
 	pairModel := ModelPair{}
 
 	var tempPairContractAddress string
@@ -455,19 +501,21 @@ func scan(rows orm.Scannable) (*ModelPair, error) {
 	pairModel.Token0Reserves = *temp0
 	pairModel.Token1Reserves = *temp1
 
-	// Hydrate
-	out1 := myUtil.MyAsync(func() erc20.ModelERC20 {
-		return erc20.GetById(pairModel.Token0Erc20Id)
-	})
-	out2 := myUtil.MyAsync(func() erc20.ModelERC20 {
-		return erc20.GetById(pairModel.Token1Erc20Id)
-	})
-	out3 := myUtil.MyAsync(func() dex.ModelDex {
-		return dex.GetById(pairModel.DexId)
-	})
-	pairModel.Token0Erc20 = <-out1
-	pairModel.Token1Erc20 = <-out2
-	pairModel.ModelDex = <-out3
+	if shouldHydrate {
+		// Hydrate
+		out1 := myUtil.MyAsync(func() erc20.ModelERC20 {
+			return erc20.GetById(pairModel.Token0Erc20Id)
+		})
+		out2 := myUtil.MyAsync(func() erc20.ModelERC20 {
+			return erc20.GetById(pairModel.Token1Erc20Id)
+		})
+		out3 := myUtil.MyAsync(func() dex.ModelDex {
+			return dex.GetById(pairModel.DexId)
+		})
+		pairModel.Token0Erc20 = <-out1
+		pairModel.Token1Erc20 = <-out2
+		pairModel.ModelDex = <-out3
+	}
 
 	return &pairModel, nil
 }

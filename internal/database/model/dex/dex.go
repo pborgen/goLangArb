@@ -15,6 +15,8 @@ type ModelDex struct {
 	NetworkId              int            `postgres.Table:"NETWORK_ID"`
 	RouterContractAddress  common.Address `postgres.Table:"ROUTER_ADDRESS"`
 	FactoryContractAddress common.Address `postgres.Table:"FACTORY_ADDRESS"`
+	RouterAbi              string         `postgres.Table:"ROUTER_ABI"`
+	FactoryAbi             string         `postgres.Table:"FACTORY_ABI"`
 }
 
 var dexColumnNames = orm.GetColumnNames(ModelDex{})
@@ -52,6 +54,27 @@ func GetAllByNetworkId(networkId int) []ModelDex {
 	}
 	return filteredDexes
 }
+
+func ModelDexToMap(modelDexList[]ModelDex) (map[int]ModelDex) {
+	modelDexMap := make(map[int]ModelDex)
+
+	for _, modelDex := range modelDexList {
+		modelDexMap[modelDex.DexId] = modelDex
+	}
+
+	return modelDexMap
+}
+
+func ModelDexToMapWithRouterAddressAsKey(modelDexList[]ModelDex) (map[common.Address]ModelDex) {
+	modelDexMap := make(map[common.Address]ModelDex)
+
+	for _, modelDex := range modelDexList {
+		modelDexMap[modelDex.RouterContractAddress] = modelDex
+	}
+
+	return modelDexMap
+}
+
 func GetAll() []ModelDex {
 
 	db := database.GetDBConnection()
@@ -83,7 +106,7 @@ func scan(rows orm.Scannable) (*ModelDex, error) {
 	var routerContractAddressString string
 	var factoryContractAddressString string
 
-	err := rows.Scan(&dex.DexId, &dex.Name, &dex.NetworkId, &routerContractAddressString, &factoryContractAddressString)
+	err := rows.Scan(&dex.DexId, &dex.Name, &dex.NetworkId, &routerContractAddressString, &factoryContractAddressString, &dex.RouterAbi, &dex.FactoryAbi)
 	if err != nil {
 		log.Error().Msgf("Could not scan rows for dex", err)
 

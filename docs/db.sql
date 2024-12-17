@@ -75,6 +75,8 @@ CREATE TABLE DEX (
                      NETWORK_ID SMALLINT NOT NULL,
                      ROUTER_ADDRESS VARCHAR(100) NOT NULL,
                      FACTORY_ADDRESS VARCHAR(100) NOT NULL,
+                     FACTORY_ABI TEXT,
+                     ROUTER_ABI TEXT,
                      CONSTRAINT FK_NETWORK
                          FOREIGN KEY(NETWORK_ID)
                              REFERENCES NETWORK(NETWORK_ID),

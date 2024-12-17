@@ -43,8 +43,9 @@ func main() {
 		dexpairgather.Start()
 	} else if processName == "listenMempool" {
 		start := time.Now()
-		mempool.GetAllTransactions()
+		mempool.SubscribeToPendingTransactions()
 		elapsed := time.Since(start)
+
 		log.Info().Msgf("Time taken: %s", elapsed)
 	} else if processName == "writePlsPairsByDexId" {
 		dexpairgather.WriteToFilePlsPairsByDexId([]int{3, 4})
